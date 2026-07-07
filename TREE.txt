@@ -1,0 +1,41 @@
+📦 youtube-batch-uploader/
+│
+├── 📋 DOCUMENTACIÓN
+│   ├── README.md ..................... Overview + features ⭐ START HERE
+│   ├── INDEX.md ...................... Mapa de documentación
+│   ├── QUICKSTART.md ................. 5 minutos (rápido)
+│   ├── SETUP.md ...................... Setup detallado
+│   ├── GITHUB_SETUP.md ............... Cómo publicar en GitHub
+│   ├── WORKFLOW.md (examples/) ....... Guía paso a paso completa
+│   ├── CONTRIBUTING.md .............. Contribuir mejoras
+│   ├── PROJECT_STRUCTURE.md ......... Estructura del proyecto
+│   └── LICENSE ....................... MIT (permisivo)
+│
+├── 💻 SCRIPTS
+│   ├── scripts/build_preview_spreadsheet.py
+│   │   └── Genera Excel con thumbnails de videos
+│   ├── scripts/build_upload_queue.py
+│   │   └── Convierte Excel → JSON queue
+│   └── scripts/scheduled_upload_worker.py
+│       └── Procesa batches automáticamente
+│
+├── ⚙️ CONFIGURACIÓN
+│   ├── config.example.yaml ........... Template (copiar a config.yaml)
+│   ├── requirements.txt ............. Dependencias Python
+│   └── .gitignore ................... Archivos a excluir de git
+│
+└── 🚀 PUBLICAR
+    └── PUBLISH.txt .................. Instrucciones para GitHub (este archivo)
+
+ARCHIVOS GENERADOS (NO SE SUBEN):
+├── config.yaml ...................... Tu configuración personal
+├── *.xlsx ........................... Spreadsheets de videos
+├── upload_queue.json ................ Estado de uploads
+└── .preview_thumbs_cache/ ........... Thumbnails en caché
+
+ESTADÍSTICAS:
+- 14 archivos de documentación
+- 3 scripts Python reutilizables
+- 1 archivo de configuración template
+- 100% listo para GitHub
+

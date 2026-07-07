@@ -1,0 +1,65 @@
+# YouTube Batch Uploader Configuration
+# Copy this file to config.yaml and fill in your details
+
+youtube:
+  # Your connection ID from YouTubeStudioMCP.com
+  # Steps to get it:
+  # 1. Visit https://YouTubeStudioMCP.com
+  # 2. Sign in with your Google account
+  # 3. Authorize access to your YouTube channel
+  # 4. Copy the Connection ID shown
+  connection_id: "PASTE_YOUR_CONNECTION_ID_HERE"
+
+  # Your YouTube channel name (for validation)
+  # This helps prevent accidentally uploading to the wrong channel
+  channel_name: "My Channel Name"
+
+  # Default privacy setting for all uploads
+  # Options: public, unlisted, private
+  privacy_status: "public"
+
+upload:
+  # How many videos to upload per batch
+  # Recommended: 2-5 (smaller = more stable, larger = faster overall)
+  batch_size: 3
+
+  # Minutes between upload batches
+  # Recommended: 30 (so 3 videos every 30 min looks organic, not batch-dumped)
+  interval_minutes: 30
+
+  # Upload order
+  # Options:
+  #   sequential: upload in spreadsheet order (first to last)
+  #   shuffle: randomize order (recommended if videos span a long date range)
+  order: "shuffle"
+
+  # Optional: seed for reproducible shuffle
+  # If omitted, uses random seed each time
+  seed: null
+
+paths:
+  # Absolute path to folder containing your .mp4 files
+  # Example: /Users/alexaramirez/Videos/my-reels
+  # Use full path, not ~/Videos
+  video_directory: "/path/to/your/videos"
+
+  # Where to save the preview spreadsheet
+  # Can be relative or absolute
+  preview_spreadsheet: "./videos_preview.xlsx"
+
+  # Where to save the upload queue JSON
+  # Used by scheduled tasks to track progress
+  upload_queue: "./upload_queue.json"
+
+  # Thumbnail cache directory
+  # Speeds up re-running the preview script
+  # Safe to delete to free space
+  thumbnail_cache: "./.preview_thumbs_cache"
+
+# Advanced options (usually don't need to change)
+debug:
+  # Show verbose output
+  verbose: false
+
+  # Dry run: generate files without uploading
+  dry_run: false
