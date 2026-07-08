@@ -4,7 +4,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![macOS](https://img.shields.io/badge/platform-macOS-lightgrey.svg)]()
 
-Automate batch uploading of video files to YouTube with a preview spreadsheet and intelligent scheduling. Upload hundreds of videos paced over time instead of all at once.
+Automate batch uploading of video files to YouTube with a preview spreadsheet and intelligent scheduling. Upload hundreds of videos paced over time instead of all at once. Using Claude Code
 
 ## Features
 
