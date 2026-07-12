@@ -4,265 +4,279 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![macOS](https://img.shields.io/badge/platform-macOS-lightgrey.svg)]()
 
-# 🎬 YouTube Batch Uploader
+Automate batch uploading of video files to YouTube with a preview spreadsheet and intelligent scheduling. Upload hundreds of videos paced over time instead of all at once. Using Claude Code
 
-**Stop uploading videos one by one. Upload 100+ videos with metadata, scheduling, and automatic retries.**
+## Features
 
-Automate your YouTube uploads with a beautiful Excel preview, intelligent scheduling, and zero manual intervention. Perfect for podcasters, content creators, stock footage managers, and anyone with a large video library.
+- 📋 **Preview Spreadsheet**: Auto-generate Excel sheets with video thumbnails for easy metadata entry
+- 📅 **Smart Scheduling**: Upload videos in batches at configurable intervals (e.g., 3 videos every 30 minutes)
+- 🎬 **Flexible Ordering**: Sequential or randomized upload order (useful to avoid "batch dump" appearance)
+- 🔄 **Automatic Retry**: Built-in retry logic with exponential backoff
+- 🎯 **Selective Upload**: Mark videos to skip or re-upload
+- 📊 **Progress Tracking**: Real-time queue status and upload metrics
 
----
+## Prerequisites
 
-## ✨ What It Does
+- Python 3.8+
+- macOS (for Quick Look thumbnail generation)
+- YouTube channel with API access
+- Claude with YouTube Studio MCP connected
 
-| Feature | Benefit |
-|---------|---------|
-| 📋 **Preview Spreadsheet** | Auto-generated Excel with thumbnails + editable metadata |
-| ⏰ **Smart Scheduling** | Upload videos automatically every N minutes |
-| 🔀 **Flexible Ordering** | Sequential or random (looks organic, not "batch-dumped") |
-| 🛡️ **Automatic Retry** | Failed uploads retry up to 3 times automatically |
-| ✅ **Progress Tracking** | Real-time status in JSON queue |
-| 🚀 **No Coding Required** | CLI commands + Claude Scheduled Tasks |
+## Quick Start
 
----
+### 1. Setup MCP Connection
 
-## 🎯 Perfect For
+Follow these steps to connect YouTube Studio MCP to your Claude account:
 
-- 🎙️ **Podcasters** — Upload 100+ episodes with consistent metadata
-- 📸 **Stock Footage Creators** — Batch upload with searchable descriptions
-- 🎬 **Reels Creators** — Convert TikTok/Instagram reels → YouTube automatically
-- 📺 **Live Streamers** — Auto-upload archived streams with timestamps
-- 🎓 **Course Creators** — Publish lecture videos in bulk
+#### Option A: Via YouTubeStudioMCP.com (Recommended)
+1. Visit https://YouTubeStudioMCP.com
+2. Sign in with your Google account
+3. Authorize access to your YouTube channel
+4. Copy your connection ID
+5. Save it for the configuration step
 
----
+#### Option B: Via Claude's MCP Settings
+1. Open Claude and go to Settings → Connected Accounts
+2. Search for "YouTube Studio"
+3. Click "Connect" and sign in with your Google account
+4. Authorize the requested permissions
+5. Note your channel name or connection ID
 
-## 🚀 Quick Start (5 Minutes)
-
-### 1️⃣ Install
+### 2. Install Dependencies
 
 ```bash
-git clone https://github.com/alexadarks/youtube-batch-uploader.git
+git clone https://github.com/yourusername/youtube-batch-uploader.git
 cd youtube-batch-uploader
 pip install -r requirements.txt
 ```
 
-### 2️⃣ Get Connection ID
-
-1. Go to **[YouTubeStudioMCP.com](https://YouTubeStudioMCP.com)**
-2. Sign in → Authorize → Copy Connection ID
-3. Save it (you'll need it soon)
-
-### 3️⃣ Configure
+### 3. Configure Your Setup
 
 ```bash
 cp config.example.yaml config.yaml
-# Edit with your Connection ID, video folder path, preferences
+# Edit config.yaml with your video folder path and channel info
 ```
 
-### 4️⃣ Generate Preview
+### 4. Run the Workflow
 
 ```bash
+# Step 1: Generate preview spreadsheet
 python3 scripts/build_preview_spreadsheet.py \
   "/path/to/videos" \
   "./videos_preview.xlsx"
-```
 
-Open Excel → Fill in **Title** for each video → Save
-
-### 5️⃣ Build Queue
-
-```bash
+# Step 2: Fill in titles/descriptions in the spreadsheet, then:
 python3 scripts/build_upload_queue.py \
   "./videos_preview.xlsx" \
   "/path/to/videos" \
   "YOUR_CONNECTION_ID" \
-  "./upload_queue.json"
+  "./upload_queue.json" \
+  --privacy public \
+  --order shuffle \
+  --batch-size 3
 ```
 
-### 6️⃣ Schedule Uploads
+## Workflow Overview
 
-Ask Claude:
-> "Set up a scheduled task that uploads videos from my queue every 30 minutes."
+### Step 1: Generate Preview Spreadsheet
+Creates an Excel file with:
+- Video filename
+- Extracted date (if present in filename)
+- Auto-generated thumbnail (via macOS Quick Look)
+- Empty Title/Description columns for you to fill
 
-✅ **Done!** Videos upload automatically.
-
----
-
-## 📚 Documentation
-
-**[📖 Start Here: Full Docs Index](INDEX.md)**
-
-| Document | Time | For |
-|----------|------|-----|
-| [QUICKSTART.md](QUICKSTART.md) | 5 min | Impatient people |
-| [SETUP.md](SETUP.md) | 15 min | First-time setup |
-| [examples/WORKFLOW.md](examples/WORKFLOW.md) | 25 min | Complete guide with troubleshooting |
-
-
-
----
-
-## 🎯 Why Use This?
-
-| Without This | With This |
-|--------------|-----------|
-| ⏱️ Upload 100 videos = 5+ hours manual work | ⚡ Same upload = 5 min setup |
-| 😴 Click, wait, repeat, click, wait, repeat | 🤖 Set it & forget it |
-| 📝 Metadata scattered across notes | 📊 All in one Excel file |
-| ❌ Upload fails? Start over manually | ✅ Auto-retry up to 3x |
-| 🎲 Upload order = random | 🎯 Control exact order |
-
-**Real example:** 50 Instagram Reels → YouTube
-
-```
-0:00   ✅ Videos 1-3 uploaded
-0:30   ✅ Videos 4-6 uploaded  
-1:00   ✅ Videos 7-9 uploaded
-...
-~4:30  ✅ All 50 uploaded
-5:00   🎉 Done, task stops automatically
-```
-
----
-
-## 🔧 Configuration
-
-Copy and customize:
+**Script**: `build_preview_spreadsheet.py`
 
 ```bash
-cp config.example.yaml config.yaml
+python3 scripts/build_preview_spreadsheet.py <video_dir> <output_xlsx>
 ```
+
+Thumbnails are cached in `.preview_thumbs_cache/` so subsequent runs are fast.
+
+### Step 2: Add Metadata
+Open the generated Excel file and:
+- Fill in **Title** for each video
+- Fill in **Description** (optional but recommended)
+- Leave rows blank to skip them
+- Save the file
+
+### Step 3: Build Upload Queue
+Converts the spreadsheet into a queue JSON that the scheduled task will consume.
+
+**Script**: `build_upload_queue.py`
+
+```bash
+python3 scripts/build_upload_queue.py <xlsx_path> <video_dir> <connection_id> <out_json> \
+  --privacy public \
+  --order shuffle \
+  --batch-size 3
+```
+
+**Options:**
+- `--privacy`: `public`, `unlisted`, or `private` (default: `public`)
+- `--order`: `sequential` or `shuffle` (default: `shuffle`)
+- `--batch-size`: videos per batch (default: `3`)
+- `--seed`: optional seed for reproducible shuffle
+
+### Step 4: Schedule Uploads
+Set up a recurring task with your Claude scheduled-tasks MCP to process the queue automatically.
+
+## Configuration
+
+### config.yaml
 
 ```yaml
 youtube:
-  connection_id: "abc123xyz789"  # From YouTubeStudioMCP.com
+  # Your YouTube connection ID from YouTubeStudioMCP.com
+  connection_id: "YOUR_CONNECTION_ID"
+  # Channel title to validate before uploading
   channel_name: "My Channel"
-  privacy_status: "public"  # public, unlisted, private
+  # Privacy: public, unlisted, private
+  privacy_status: "public"
 
 upload:
-  batch_size: 3              # 3 videos per batch
-  interval_minutes: 30       # Every 30 minutes
-  order: "shuffle"           # Random = organic, not batch-dumped
-  
+  # Batch size (videos per run)
+  batch_size: 3
+  # Interval in minutes between batches
+  interval_minutes: 30
+  # Order: sequential or shuffle
+  order: "shuffle"
+  # Random seed (optional, for reproducible shuffle)
+  seed: null
+
 paths:
-  video_directory: "/Users/you/Videos/my-reels"
+  # Folder containing .mp4 files
+  video_directory: "/path/to/videos"
+  # Where to save preview spreadsheet
   preview_spreadsheet: "./videos_preview.xlsx"
+  # Where to save upload queue
   upload_queue: "./upload_queue.json"
+  # Cache for thumbnails
+  thumbnail_cache: "./.preview_thumbs_cache"
 ```
 
----
+## Column Details
 
-## 📊 Preview Spreadsheet
+### Preview Spreadsheet Columns
 
-Your Excel file looks like this:
+| Column | Purpose | Editable |
+|--------|---------|----------|
+| # | Row number | No |
+| Preview | Thumbnail image | No |
+| Filename | Video filename | No |
+| Date | Extracted from filename (YYYY-MM-DD) | No |
+| Title | Video title (required) | **Yes** |
+| Description | Video description (optional) | **Yes** |
 
-| # | Preview | Filename | Date | Title | Description |
-|---|---------|----------|------|-------|-------------|
-| 1 | 🖼️ | video1.mp4 | 2024-01-15 | **YOU FILL THIS** | **YOU FILL THIS** |
-| 2 | 🖼️ | video2.mp4 | 2024-01-16 | **YOU FILL THIS** | **YOU FILL THIS** |
-| 3 | 🖼️ | video3.mp4 | 2024-01-17 | **YOU FILL THIS** | **YOU FILL THIS** |
+## Pitfalls & Solutions
 
-- 🖼️ **Preview** = Auto-generated thumbnail
-- ✏️ **Title & Description** = You edit these
-- Dates auto-extracted from filename
+### ⚠️ File Format Confusion (.xlsx vs .numbers)
 
----
+**Problem**: On macOS, opening an Excel file with Numbers.app can auto-convert it to `.numbers` format, breaking the scripts.
 
-## 🚨 Common Issues & Fixes
+**Solution**: 
+- Don't edit the file manually if possible
+- If converted to `.numbers`, manually convert back to `.xlsx` (Right-click → Export as Excel)
+- Or use CLI: `python3 scripts/build_preview_spreadsheet.py` to rebuild from scratch
 
-### No thumbnails?
+### ⚠️ Deleting Rows from Spreadsheet
+
+**Problem**: Deleting rows manually or via `openpyxl.delete_rows()` can desync images from filenames.
+
+**Solution**:
+- Always rebuild the spreadsheet using the script
+- Mark videos as "Title/Description: [SKIP]" then filter them out when building the queue
+- Or simply remove the .mp4 files from disk and rebuild
+
+### ⚠️ Empty Titles/Descriptions
+
+**Problem**: Videos uploading with missing metadata.
+
+**Solution**: The script warns about empty titles. Either:
+- Fill them in before building the queue
+- Use the filename as a fallback (scripts can auto-fill)
+
+### ⚠️ Upload Failures
+
+**Problem**: Video upload fails, need to retry.
+
+**Solution**: 
+- Queue has built-in retry logic (up to 3 attempts per video)
+- Failed videos show in `upload_queue.json` with `error` field
+- Scheduled task automatically retries until attempts = 3
+
+### ⚠️ Large Video Files
+
+**Problem**: Timeout or bandwidth issues uploading huge files.
+
+**Solution**:
+- Reduce batch size (e.g., 1-2 videos per batch)
+- Increase interval between batches
+- Upload videos sequentially at different times of day
+
+## Using with Claude Scheduled Tasks
+
+Once you have `upload_queue.json`, create a scheduled task with Claude to automatically process batches:
+
 ```bash
-rm -rf .preview_thumbs_cache/
-python3 scripts/build_preview_spreadsheet.py ...
+# Example cron (every 30 minutes)
+*/30 * * * *
+
+# Task runs:
+python3 scripts/scheduled_upload_worker.py <path-to-upload-queue.json> <connection-id>
 ```
 
-### "Connection ID invalid"?
-1. Go to https://YouTubeStudioMCP.com
-2. Verify your Connection ID is correct
-3. Ask Claude: "List my YouTube channels"
+The worker script:
+1. Reads the queue file
+2. Uploads next batch of videos
+3. Updates queue with results
+4. Disables itself when complete
 
-### Videos not uploading?
-1. Check internet connection
-2. Verify video files are valid
-3. Check `upload_queue.json` for errors
-4. Make sure Claude MCP is connected
+## Troubleshooting
 
-**[Full troubleshooting →](SETUP.md)**
+### No thumbnails generated
+- Ensure you're on macOS (uses `qlmanage`)
+- Check that video files are valid: `file video.mp4`
+- Clear cache and retry: `rm -rf .preview_thumbs_cache/`
 
----
+### "Connection ID not found"
+- Verify connection ID from YouTubeStudioMCP.com
+- Test connection: Ask Claude to list your YouTube channels via the MCP
 
-## 🎬 Advanced Options
+### Videos not uploading
+- Check internet connection
+- Verify video file sizes (YouTube has limits)
+- Review `upload_queue.json` for error messages
+- Ensure channel still has upload quota
 
-```bash
-# Upload slower (better for small channels)
---batch-size 1 --interval 60
+### Spreadsheet not updating
+- Clear local cache: `rm upload_queue.json`
+- Rebuild spreadsheet with `--thumb-cache` flag pointing to a fresh directory
+- Check file permissions: `ls -la videos_preview.xlsx`
 
-# Upload faster (for established channels)
---batch-size 5 --interval 15
+## Requirements
 
-# Sequential order (playlist-style)
---order sequential
+See `requirements.txt`:
 
-# Reproducible shuffle (same order every time)
---order shuffle --seed 42
+```
+openpyxl>=3.0.0
+Pillow>=9.0.0
 ```
 
----
+## License
 
-## 🤝 Contributing
+MIT
 
-Ideas? Bugs? Want to help?
+## Contributing
 
-- [CONTRIBUTING.md](CONTRIBUTING.md) — How to contribute
-- [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md) — Code overview
-- **Planned:** Linux/Windows support, web UI, other platforms
+Contributions welcome! Please:
+1. Fork the repo
+2. Create a feature branch
+3. Test your changes
+4. Submit a PR
 
----
+## Support
 
-## 📄 License
-
-**MIT** — Use freely, commercially or personally. See [LICENSE](LICENSE).
-
----
-
-## 🌍 Languages
-
-- 🇬🇧 English (this file)
-- 🇪🇸 [Spanish / Español](README.es.md)
-
----
-
-## 🚀 Next Steps
-
-1. **[Quick Start (5 min) →](QUICKSTART.md)**
-2. **[Full Setup (15 min) →](SETUP.md)**  
-3. **[Complete Workflow (25 min) →](examples/WORKFLOW.md)**
-4. **[GitHub Repo →](https://github.com/alexadarks/youtube-batch-uploader)**
-
----
-
-## 💡 Tips for Creators
-
-### Organize your videos
-```
-video_2024-01-15_tips.mp4       ← Date auto-extracted
-content_2024-01-16_recipe.mp4   ← Date auto-extracted
-episode_final.mp4               ← No date found
-```
-
-### Upload in waves
-Divide 200 videos into 4 batches of 50, upload weekly → looks natural
-
-### Adjust pacing
-- Small channel? 1 video per hour
-- Established channel? 5 videos per 15 min
-
-### Reuse metadata
-The Excel file remembers your previous titles → edit and rebuild → same metadata preserved
-
----
-
-**Made with ❤️ for content creators.**
-
-*Because uploading 100 videos manually is not a personality trait.*
-
-
+- 📖 See `examples/` for step-by-step workflows
+- 🐛 Open an issue for bugs
+- 💡 Discussions for feature requests
