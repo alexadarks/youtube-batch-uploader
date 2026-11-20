@@ -1,6 +1,19 @@
 # 📸 Screenshots & Visual Guide
 
-Visual walkthrough of YouTube Batch Uploader in action.
+Visual walkthrough of YouTube Batch Uploader in action. · 🇪🇸 [Ver en español](README.es.md)
+
+| | |
+|---|---|
+| **How it works** | <img src="docs/images/workflow-en.png" width="600"> |
+| **Preview spreadsheet** | <img src="docs/images/spreadsheet-en.png" width="600"> |
+| **Script output** | <img src="docs/images/terminal.png" width="600"> |
+| **Scheduled batches** | <img src="docs/images/schedule-en.png" width="600"> |
+
+Spanish versions of every image live in [`docs/images/`](docs/images/) (`*-es.png`).
+
+---
+
+## Detailed text walkthrough
 
 ---
 
