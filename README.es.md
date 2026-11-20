@@ -1,39 +1,60 @@
-[![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![macOS](https://img.shields.io/badge/platform-macOS-lightgrey.svg)]()
+<p align="center">
+  <a href="README.md">🇬🇧 English</a> · <b>🇪🇸 Español</b>
+</p>
 
-# 🎬 YouTube Batch Uploader
+<p align="center">
+  <img src="docs/images/banner-es.png" alt="YouTube Batch Uploader — sube 100+ videos con metadatos, programación inteligente y reintentos automáticos" width="100%">
+</p>
 
-**Deja de subir videos uno por uno. Sube 100+ videos con metadatos, programación y reintentos automáticos.**
+<p align="center">
+  <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.8+-blue.svg" alt="Python 3.8+"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/Licencia-MIT-yellow.svg" alt="Licencia: MIT"></a>
+  <img src="https://img.shields.io/badge/plataforma-macOS-lightgrey.svg" alt="macOS">
+  <img src="https://img.shields.io/badge/hecho%20con-Claude-d97757.svg" alt="Hecho con Claude">
+</p>
 
-Automatiza tus subidas a YouTube con una hermosa vista previa en Excel, programación inteligente e intervención manual cero. Perfecto para podcasters, creadores de contenido, gestores de librerías de stock footage y cualquiera con un gran número de videos.
+<p align="center">
+  <b>Deja de subir videos uno por uno.</b><br>
+  Convierte una carpeta de videos en subidas a YouTube espaciadas y 100% programadas — con vista previa en Excel, orden aleatorio y reintentos automáticos.
+</p>
 
 ---
 
 ## ✨ ¿Qué hace?
 
-| Característica | Beneficio |
-|---------|---------|
-| 📋 **Vista Previa en Excel** | Excel auto-generado con miniaturas + metadatos editables |
-| ⏰ **Programación Inteligente** | Sube videos automáticamente cada N minutos |
-| 🔀 **Orden Flexible** | Secuencial o aleatorio (se ve orgánico, no "batch-dump") |
-| 🛡️ **Reintentos Automáticos** | Los videos fallidos se resuben hasta 3 veces automáticamente |
-| ✅ **Seguimiento de Progreso** | Estado en tiempo real en cola JSON |
-| 🚀 **Sin Código Requerido** | Comandos CLI + Tareas Programadas de Claude |
+| Característica | Por qué importa |
+|---|---|
+| 📋 **Excel con miniaturas** | Ves cada video antes de publicarlo y escribes títulos/descripciones en un solo lugar |
+| ⏰ **Lotes espaciados** | Por ejemplo, 3 videos cada 30 minutos, en vez de 100 de golpe |
+| 🔀 **Orden secuencial o aleatorio** | El aleatorio evita que tu canal parezca un "batch dump" |
+| 🛡️ **Reintentos automáticos** | Las subidas fallidas se reintentan hasta 3 veces |
+| ♻️ **Re-ejecuciones seguras** | Al regenerar el Excel se conservan los títulos que ya escribiste |
+| 📊 **Seguimiento del progreso** | El estado de cada video queda en `upload_queue.json` |
+
+## 🎯 Ideal para
+
+🎙️ **Podcasters** · 🎬 **Creadores de Reels / TikTok** · 🎓 **Creadores de cursos** · 📺 **Streamers** · 📸 **Bancos de stock footage**
+
+Guías paso a paso (en inglés): [Podcasters](examples/PODCASTERS.md) · [Creadores de Reels](examples/REELS_CREATORS.md) · [Creadores de cursos](examples/COURSE_CREATORS.md)
 
 ---
 
-## 🎯 Perfecto Para
+## 🧭 Cómo funciona
 
-- 🎙️ **Podcasters** — Sube 100+ episodios con metadatos consistentes
-- 📸 **Creadores de Stock Footage** — Sube en lotes con descripciones buscables
-- 🎬 **Creadores de Reels** — Convierte reels de TikTok/Instagram → YouTube automáticamente
-- 📺 **Streamers** — Auto-sube streams grabados con timestamps
-- 🎓 **Creadores de Cursos** — Publica videos de clases en masa
+<p align="center">
+  <img src="docs/images/workflow-es.png" alt="Flujo: carpeta de videos → Excel de vista previa → cola de subida → lotes programados" width="100%">
+</p>
 
 ---
 
-## 🚀 Inicio Rápido (5 Minutos)
+## 🚀 Inicio rápido (5 minutos)
+
+### Requisitos
+
+- Python 3.8+
+- macOS (las miniaturas se generan con Quick Look)
+- Un canal de YouTube
+- Claude con el **MCP de YouTube Studio** conectado
 
 ### 1️⃣ Instalar
 
@@ -43,220 +64,192 @@ cd youtube-batch-uploader
 pip install -r requirements.txt
 ```
 
-### 2️⃣ Obtener ID de Conexión
+### 2️⃣ Conectar YouTube con Claude
 
-1. Ve a **[YouTubeStudioMCP.com](https://YouTubeStudioMCP.com)**
-2. Inicia sesión → Autoriza → Copia ID de Conexión
-3. Guárdalo (lo necesitarás pronto)
+**Opción A — YouTubeStudioMCP.com (recomendada)**
+1. Entra a [YouTubeStudioMCP.com](https://YouTubeStudioMCP.com) e inicia sesión con Google
+2. Autoriza el acceso a tu canal
+3. Copia tu **ID de Conexión** (Connection ID)
+
+**Opción B — Configuración de Claude**
+1. En Claude, abre Configuración → Conectores y busca "YouTube Studio"
+2. Conéctalo e inicia sesión con Google
+3. Anota el nombre de tu canal o tu ID de Conexión
 
 ### 3️⃣ Configurar
 
 ```bash
 cp config.example.yaml config.yaml
-# Edita con tu ID de Conexión, ruta de carpeta de videos, preferencias
+# Agrega tu ID de Conexión, la carpeta de videos y tus preferencias
 ```
 
-### 4️⃣ Generar Vista Previa
+### 4️⃣ Generar el Excel de vista previa
 
 ```bash
-python3 scripts/build_preview_spreadsheet.py \
-  "/ruta/a/videos" \
-  "./videos_preview.xlsx"
+python3 scripts/build_preview_spreadsheet.py "/ruta/a/videos" "./videos_preview.xlsx"
 ```
 
-Abre Excel → Llena **Título** para cada video → Guarda
+Obtienes un Excel con una miniatura por video. Completa **Título** y **Descripción**:
 
-### 5️⃣ Crear Cola
+<p align="center">
+  <img src="docs/images/spreadsheet-es.png" alt="Excel de vista previa con miniaturas, nombres de archivo, fechas y columnas editables de título y descripción" width="100%">
+</p>
+
+> 💡 Las fechas se extraen solas de nombres como `reel_2026-01-15_travel-tips.mp4`. Las celdas resaltadas siguen vacías: el siguiente paso te avisa de ellas.
+
+### 5️⃣ Crear la cola de subida
 
 ```bash
 python3 scripts/build_upload_queue.py \
-  "./videos_preview.xlsx" \
-  "/ruta/a/videos" \
-  "TU_ID_DE_CONEXION" \
-  "./upload_queue.json"
+  "./videos_preview.xlsx" "/ruta/a/videos" "TU_ID_DE_CONEXION" "./upload_queue.json" \
+  --privacy public --order shuffle --batch-size 3
 ```
 
-### 6️⃣ Programar Subidas
+Ambos scripts muestran un resumen en JSON y te avisan si falta algo antes de subir un solo video:
+
+<p align="center">
+  <img src="docs/images/terminal.png" alt="Salida en la terminal de ambos scripts, con advertencia por videos sin metadatos" width="85%">
+</p>
+
+### 6️⃣ Programar las subidas
 
 Pídele a Claude:
-> "Configura una tarea programada que suba videos de mi cola cada 30 minutos."
 
-✅ **¡Listo!** Los videos se suben automáticamente.
+> *"Configura una tarea programada que suba el siguiente lote de `/ruta/a/upload_queue.json` cada 30 minutos."*
+
+Cada ejecución sube el siguiente lote, actualiza la cola y la tarea se detiene sola cuando termina:
+
+<p align="center">
+  <img src="docs/images/schedule-es.png" alt="Línea de tiempo: 3 videos cada 30 minutos, una subida fallida se reintenta en el siguiente lote y la tarea se detiene cuando la cola queda vacía" width="100%">
+</p>
+
+✅ **¡Listo!** Tus videos se publican solos.
+
+---
+
+## ⚙️ Opciones
+
+| Flag (`build_upload_queue.py`) | Valores | Por defecto |
+|---|---|---|
+| `--privacy` | `public` · `unlisted` · `private` | `public` |
+| `--order` | `sequential` · `shuffle` | `shuffle` |
+| `--batch-size` | videos por ejecución | `3` |
+| `--seed` | cualquier número, para repetir el mismo orden aleatorio | — |
+
+El **intervalo** entre lotes se define en la tarea programada (por ejemplo, cada 30 minutos).
+
+**Ritmo sugerido**
+
+| Canal | Tamaño de lote | Intervalo |
+|---|---|---|
+| 🌱 Nuevo / pequeño | 1 | 60 min |
+| 🌿 En crecimiento | 3 | 30 min |
+| 🌳 Consolidado | 5 | 15 min |
+
+<details>
+<summary><b>📄 Ejemplo completo de <code>config.yaml</code></b></summary>
+
+```yaml
+youtube:
+  connection_id: "TU_ID_DE_CONEXION"   # de YouTubeStudioMCP.com
+  channel_name: "Mi Canal"             # se valida antes de subir
+  privacy_status: "public"             # public, unlisted, private
+
+upload:
+  batch_size: 3
+  interval_minutes: 30
+  order: "shuffle"                     # sequential o shuffle
+  seed: null
+
+paths:
+  video_directory: "/ruta/a/videos"
+  preview_spreadsheet: "./videos_preview.xlsx"
+  upload_queue: "./upload_queue.json"
+  thumbnail_cache: "./.preview_thumbs_cache"
+```
+
+</details>
+
+<details>
+<summary><b>📊 Columnas del Excel</b></summary>
+
+El archivo generado usa los encabezados en inglés:
+
+| Columna | Contenido | Editable |
+|---|---|---|
+| # | Número de fila | No |
+| Preview | Miniatura | No |
+| Filename | Nombre del archivo | No |
+| Date | Fecha del nombre de archivo (`AAAA-MM-DD`) | No |
+| Title | Título del video | **Sí** |
+| Description | Descripción del video | **Sí** |
+
+</details>
+
+---
+
+## 🚨 Problemas comunes
+
+<details>
+<summary><b>⚠️ El .xlsx se convirtió en .numbers</b></summary>
+
+Abrirlo con Numbers en macOS puede convertirlo. Expórtalo de vuelta (Archivo → Exportar a → Excel) o regenéralo con `build_preview_spreadsheet.py`: tus títulos se conservan.
+</details>
+
+<details>
+<summary><b>⚠️ Borré filas y las miniaturas se desordenaron</b></summary>
+
+No borres filas a mano. Quita el `.mp4` de la carpeta y vuelve a correr `build_preview_spreadsheet.py`: reconstruye el Excel, mantiene tus títulos y elimina los archivos que ya no existen.
+</details>
+
+<details>
+<summary><b>⚠️ No aparecen miniaturas</b></summary>
+
+- Las miniaturas requieren macOS (`qlmanage`)
+- Revisa que el video sea válido: `file video.mp4`
+- Limpia la caché y reintenta: `rm -rf /ruta/a/videos/.preview_thumbs_cache/`
+</details>
+
+<details>
+<summary><b>⚠️ "Connection ID not found"</b></summary>
+
+Verifica el ID en YouTubeStudioMCP.com y pídele a Claude: *"Lista mis canales de YouTube"* para probar la conexión.
+</details>
+
+<details>
+<summary><b>⚠️ Los videos no se suben</b></summary>
+
+- Busca el campo `error` en `upload_queue.json`
+- Confirma que el MCP de YouTube Studio sigue conectado en Claude
+- Revisa la cuota diaria de subidas de tu canal
+- ¿Archivos pesados? Baja el tamaño de lote y aumenta el intervalo
+</details>
+
+Más ayuda: [SETUP.md](SETUP.md) · [examples/WORKFLOW.md](examples/WORKFLOW.md)
 
 ---
 
 ## 📚 Documentación
 
-**[📖 Comienza aquí: Índice Completo de Documentación](INDEX.md)**
-
 | Documento | Tiempo | Para |
-|----------|--------|------|
-| [QUICKSTART.md](QUICKSTART.md) | 5 min | Personas apuradas |
-| [SETUP.md](SETUP.md) | 15 min | Setup por primera vez |
+|---|---|---|
+| [QUICKSTART.md](QUICKSTART.md) | 5 min | Si estás apurada/o |
+| [SETUP.md](SETUP.md) | 15 min | Primera configuración |
 | [examples/WORKFLOW.md](examples/WORKFLOW.md) | 25 min | Guía completa + solución de problemas |
-
----
-
-## 🎯 ¿Por Qué Usar Esto?
-
-| Sin Esto | Con Esto |
-|----------|----------|
-| ⏱️ Subir 100 videos = 5+ horas de trabajo manual | ⚡ Mismo = 5 min setup |
-| 😴 Click, espera, repite, click, espera, repite | 🤖 Configura y olvídate |
-| 📝 Metadatos dispersos en notas | 📊 Todo en un archivo Excel |
-| ❌ ¿Falla subida? Comienza de nuevo manual | ✅ Reintentos automáticos hasta 3x |
-| 🎲 Orden de subida = aleatorio | 🎯 Controla el orden exacto |
-
-**Ejemplo real:** 50 Reels de Instagram → YouTube
-
-```
-0:00   ✅ Videos 1-3 subidos
-0:30   ✅ Videos 4-6 subidos  
-1:00   ✅ Videos 7-9 subidos
-...
-~4:30  ✅ Los 50 subidos
-5:00   🎉 Listo, tarea se detiene automáticamente
-```
-
----
-
-## 🔧 Configuración
-
-Copia y personaliza:
-
-```bash
-cp config.example.yaml config.yaml
-```
-
-```yaml
-youtube:
-  connection_id: "abc123xyz789"  # De YouTubeStudioMCP.com
-  channel_name: "Mi Canal"
-  privacy_status: "public"  # public, unlisted, private
-
-upload:
-  batch_size: 3              # 3 videos por lote
-  interval_minutes: 30       # Cada 30 minutos
-  order: "shuffle"           # Aleatorio = orgánico, no batch-dump
-  
-paths:
-  video_directory: "/Users/tu/Videos/mis-reels"
-  preview_spreadsheet: "./videos_preview.xlsx"
-  upload_queue: "./upload_queue.json"
-```
-
----
-
-## 📊 Vista Previa del Excel
-
-Tu archivo Excel se ve así:
-
-| # | Vista Previa | Nombre de Archivo | Fecha | Título | Descripción |
-|---|---------|----------|------|-------|-------------|
-| 1 | 🖼️ | video1.mp4 | 2024-01-15 | **TÚ LLENARÁS ESTO** | **TÚ LLENARÁS ESTO** |
-| 2 | 🖼️ | video2.mp4 | 2024-01-16 | **TÚ LLENARÁS ESTO** | **TÚ LLENARÁS ESTO** |
-| 3 | 🖼️ | video3.mp4 | 2024-01-17 | **TÚ LLENARÁS ESTO** | **TÚ LLENARÁS ESTO** |
-
-- 🖼️ **Vista Previa** = Miniatura auto-generada
-- ✏️ **Título & Descripción** = Tú editas estas
-- Fechas auto-extraídas del nombre de archivo
-
----
-
-## 🚨 Problemas Comunes & Soluciones
-
-### ¿Sin miniaturas?
-```bash
-rm -rf .preview_thumbs_cache/
-python3 scripts/build_preview_spreadsheet.py ...
-```
-
-### ¿"ID de Conexión inválido"?
-1. Ve a https://YouTubeStudioMCP.com
-2. Verifica que tu ID de Conexión sea correcto
-3. Pídele a Claude: "Lista mis canales de YouTube"
-
-### ¿Videos no se suben?
-1. Comprueba conexión a internet
-2. Verifica que archivos de video sean válidos
-3. Revisa `upload_queue.json` para errores
-4. Asegúrate de que MCP de Claude está conectado
-
-**[Solución completa de problemas →](SETUP.md)**
-
----
-
-## 🎬 Opciones Avanzadas
-
-```bash
-# Subir más lentamente (mejor para canales pequeños)
---batch-size 1 --interval 60
-
-# Subir más rápido (para canales establecidos)
---batch-size 5 --interval 15
-
-# Orden secuencial (estilo playlist)
---order sequential
-
-# Aleatorio reproducible (mismo orden cada vez)
---order shuffle --seed 42
-```
-
----
+| [INDEX.md](INDEX.md) | — | Todos los documentos del repo |
 
 ## 🤝 Contribuir
 
-¿Ideas? ¿Bugs? ¿Quieres ayudar?
-
-- [CONTRIBUTING.md](CONTRIBUTING.md) — Cómo contribuir
-- [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md) — Descripción del código
-- **Planeado:** Soporte Linux/Windows, interfaz web, otras plataformas
-
----
+Ideas y reportes de bugs son bienvenidos — revisa [CONTRIBUTING.md](CONTRIBUTING.md) y [PROJECT_STRUCTURE.md](PROJECT_STRUCTURE.md).
+**En el roadmap:** miniaturas en Linux/Windows, interfaz web y más plataformas.
 
 ## 📄 Licencia
 
-**MIT** — Usa libremente, comercialmente o personalmente. Ver [LICENSE](LICENSE).
+**MIT** — úsalo libremente, de forma personal o comercial. Ver [LICENSE](LICENSE).
 
 ---
 
-## 🌍 Idiomas
-
-- 🇬🇧 [English](README.md)
-- 🇪🇸 Español (este archivo)
-
----
-
-## 🚀 Próximos Pasos
-
-1. **[Inicio Rápido (5 min) →](QUICKSTART.md)**
-2. **[Setup Completo (15 min) →](SETUP.md)**  
-3. **[Flujo Completo (25 min) →](examples/WORKFLOW.md)**
-4. **[Repo GitHub →](https://github.com/alexadarks/youtube-batch-uploader)**
-
----
-
-## 💡 Consejos para Creadores
-
-### Organiza tus videos
-```
-video_2024-01-15_tips.mp4       ← Fecha auto-extraída
-contenido_2024-01-16_receta.mp4 ← Fecha auto-extraída
-episodio_final.mp4              ← Sin fecha
-```
-
-### Sube en ondas
-Divide 200 videos en 4 lotes de 50, sube semanalmente → se ve natural
-
-### Ajusta la frecuencia
-- Canal pequeño? 1 video por hora
-- Canal establecido? 5 videos cada 15 min
-
-### Reutiliza metadatos
-El archivo Excel recuerda tus títulos anteriores → edita y reconstruye → mismos metadatos preservados
-
----
-
-**Hecho con ❤️ para creadores de contenido.**
-
-*Porque subir 100 videos manualmente no es un rasgo de personalidad.*
+<p align="center">
+  Hecho con ❤️ para creadores de contenido por <a href="https://github.com/alexadarks">@alexadarks</a><br>
+  <i>Porque subir 100 videos a mano no es un rasgo de personalidad.</i>
+</p>
