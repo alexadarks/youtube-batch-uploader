@@ -15,7 +15,8 @@
 
 <p align="center">
   <b>Stop uploading videos one by one.</b><br>
-  Turn a folder of videos into a paced, fully scheduled YouTube upload — with a visual Excel preview, shuffle order and automatic retries.
+  Give the Reels and videos you already published on Instagram a second life on YouTube.<br>
+  Download them, review them in a visual Excel sheet, and let Claude upload them in paced batches — with shuffle order and automatic retries.
 </p>
 
 ---
@@ -24,6 +25,7 @@
 
 | Feature | Why it matters |
 |---|---|
+| 📲 **Reuse your Instagram content** | Turn the Reels you already published into YouTube videos — no new filming needed |
 | 📋 **Excel preview with thumbnails** | See every video before it goes live and type titles/descriptions in one place |
 | ⏰ **Paced batches** | e.g. 3 videos every 30 minutes, instead of 100 at once |
 | 🔀 **Sequential or shuffled order** | Shuffle so your channel doesn't look like a "batch dump" |
@@ -33,7 +35,7 @@
 
 ## 🎯 Perfect for
 
-🎙️ **Podcasters** · 🎬 **Reels / TikTok creators** · 🎓 **Course creators** · 📺 **Streamers** · 📸 **Stock footage libraries**
+📲 **Instagram creators repurposing their Reels** · 🎙️ **Podcasters** · 🎬 **Reels / TikTok creators** · 🎓 **Course creators** · 📺 **Streamers** · 📸 **Stock footage libraries**
 
 Step-by-step guides: [Podcasters](examples/PODCASTERS.md) · [Reels creators](examples/REELS_CREATORS.md) · [Course creators](examples/COURSE_CREATORS.md)
 
@@ -55,6 +57,20 @@ Step-by-step guides: [Podcasters](examples/PODCASTERS.md) · [Reels creators](ex
 - macOS (thumbnails are generated with Quick Look)
 - A YouTube channel
 - Claude with the **YouTube Studio MCP** connected
+
+### 0️⃣ Download your Instagram videos *(skip if you already have the files)*
+
+The point of this tool is to reuse what you've **already published**. If your videos only live on Instagram, download them first:
+
+1. In **Chrome**, install the **[Ultra Downloader for Instagram](https://chromewebstore.google.com/detail/inekcncapjijgfjjlkadkmdgfoekcilb)** extension.
+
+   <img src="docs/images/ig-extension.png" alt="Ultra Downloader for Instagram extension enabled in Chrome" width="440">
+
+2. Open [instagram.com](https://www.instagram.com) in Chrome, log in, and go to your profile.
+3. Click the **Ultra** button in Instagram's menu and choose the bulk download option for **videos / Reels only** (no photos). The extension packs everything into a `.zip`.
+4. Unzip it and move **only the `.mp4` files** into **one single folder**, e.g. `~/Videos/reels`. That folder is what you'll use in every step below.
+
+> ⚠️ Only download content you own or have the rights to republish. The extension is a third-party tool, not affiliated with Instagram or this project.
 
 ### 1️⃣ Install
 
