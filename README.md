@@ -62,13 +62,15 @@ Step-by-step guides: [Podcasters](examples/PODCASTERS.md) · [Reels creators](ex
 
 The point of this tool is to reuse what you've **already published**. If your videos only live on Instagram, download them first:
 
-1. In **Chrome**, install the **[Ultra Downloader for Instagram](https://chromewebstore.google.com/detail/inekcncapjijgfjjlkadkmdgfoekcilb)** extension.
+1. In **Chrome**, install the **[Ultra Downloader para IG](https://chromewebstore.google.com/detail/ultra-downloader-para-ig/daokalfcfkhheoiimjbmfclcogpgahkm)** extension.
 
-   <img src="docs/images/ig-extension.png" alt="Ultra Downloader for Instagram extension enabled in Chrome" width="440">
+   > 💡 It doesn't have to be this one — any Chrome extension that bulk-downloads Instagram videos/Reels works. Just make sure you end up with `.mp4` files.
+
+   <img src="docs/images/ig-extension.png" alt="Ultra Downloader para IG extension enabled in Chrome" width="440">
 
 2. Open [instagram.com](https://www.instagram.com) in Chrome, log in, and go to your profile.
-3. Click the **Ultra** button in Instagram's menu and choose the bulk download option for **videos / Reels only** (no photos). The extension packs everything into a `.zip`.
-4. Unzip it and move **only the `.mp4` files** into **one single folder**, e.g. `~/Videos/reels`. That folder is what you'll use in every step below.
+3. Use the extension's button on Instagram and choose the bulk download option for **videos / Reels only** (no photos). Some extensions deliver everything in a `.zip`.
+4. If you got a `.zip`, unzip it. Move **only the `.mp4` files** into **one single folder**, e.g. `~/Videos/reels`. That folder is what you'll use in every step below.
 
 > ⚠️ Only download content you own or have the rights to republish. The extension is a third-party tool, not affiliated with Instagram or this project.
 

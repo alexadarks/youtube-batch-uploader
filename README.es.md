@@ -62,13 +62,15 @@ Guías paso a paso (en inglés): [Podcasters](examples/PODCASTERS.md) · [Creado
 
 La idea de esta herramienta es reutilizar lo que **ya publicaste**. Si tus videos solo están en Instagram, descárgalos primero:
 
-1. En **Chrome**, instala la extensión **[Ultra Downloader para Instagram](https://chromewebstore.google.com/detail/inekcncapjijgfjjlkadkmdgfoekcilb)**.
+1. En **Chrome**, instala la extensión **[Ultra Downloader para IG](https://chromewebstore.google.com/detail/ultra-downloader-para-ig/daokalfcfkhheoiimjbmfclcogpgahkm)**.
+
+   > 💡 No tiene que ser necesariamente esta: sirve cualquier extensión de Chrome que descargue videos/Reels de Instagram en lote. Lo importante es que termines con archivos `.mp4`.
 
    <img src="docs/images/ig-extension.png" alt="Extensión Ultra Downloader para IG activada en Chrome" width="440">
 
 2. Abre [instagram.com](https://www.instagram.com) en Chrome, inicia sesión y entra a tu perfil.
-3. Haz clic en el botón **Ultra** del menú de Instagram y elige la descarga masiva **solo de videos / Reels** (sin fotos). La extensión lo empaqueta todo en un `.zip`.
-4. Descomprímelo y mueve **solo los archivos `.mp4`** a **una sola carpeta**, por ejemplo `~/Videos/reels`. Esa carpeta es la que usarás en todos los pasos siguientes.
+3. Usa el botón de la extensión en Instagram y elige la descarga masiva **solo de videos / Reels** (sin fotos). Algunas extensiones lo entregan todo en un `.zip`.
+4. Si te llegó un `.zip`, descomprímelo. Mueve **solo los archivos `.mp4`** a **una sola carpeta**, por ejemplo `~/Videos/reels`. Esa carpeta es la que usarás en todos los pasos siguientes.
 
 > ⚠️ Descarga solo contenido tuyo o que tengas derecho a republicar. La extensión es de terceros y no tiene relación con Instagram ni con este proyecto.
 
